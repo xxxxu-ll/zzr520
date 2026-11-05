@@ -1,13 +1,13 @@
 /* 写给紫瑞的星空 · 离线缓存
    HTML 走“网络优先”，样式和脚本走“先用缓存、后台更新”，
    这样改了文件不用手动改版本号，下一次打开也会自动拿到新版。 */
-const CACHE = 'zzr520-v1';
+const CACHE = 'zzr520-v2';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css',
-  './app.js',
-  './fortune.js',
+  './styles.css?v=2',
+  './app.js?v=2',
+  './fortune.js?v=2',
   './noise.png',
   './favicon.svg',
   './manifest.webmanifest',
@@ -61,6 +61,18 @@ self.addEventListener('fetch', event => {
         return res;
       }).catch(() => hit);
       return hit || fresh;
+    })
+  );
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const client of list) {
+        if (client.url.indexOf(self.registration.scope) === 0 && 'focus' in client) return client.focus();
+      }
+      return self.clients.openWindow('./');
     })
   );
 });

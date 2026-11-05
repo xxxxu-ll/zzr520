@@ -27,9 +27,9 @@
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="preload" href="./fonts/wenkai-subset.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./fortune.js" defer></script>
-  <script src="./app.js" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=2">
+  <script src="./fortune.js?v=2" defer></script>
+  <script src="./app.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到每日星语</a>
@@ -98,7 +98,7 @@
       </section>
 
       <section class="personal-section" aria-label="今天的小小仪式">
-        <article class="ritual-card"><span class="section-index">02 / A MOMENT FOR YOURSELF</span><h2>给今天一点仪式感<span aria-hidden="true">✧</span></h2><p id="daily-ritual">泡一杯喜欢的热饮，给自己留十分钟，什么也不用赶。</p><div class="ritual-rule"></div><label class="mood-label">此刻的你，是什么心情？</label><div class="mood-options" role="group" aria-label="记录今日心情"><button type="button" data-mood="开心" aria-pressed="false"><span aria-hidden="true">☀</span> 开心</button><button type="button" data-mood="平静" aria-pressed="false"><span aria-hidden="true">☁</span> 平静</button><button type="button" data-mood="有点累" aria-pressed="false"><span aria-hidden="true">☾</span> 有点累</button><button type="button" data-mood="想被抱抱" aria-pressed="false"><span aria-hidden="true">♡</span> 想被抱抱</button></div><p id="mood-status" class="mood-status" role="status">心情只保存在你的浏览器里，安心写下就好。</p></article>
+        <article class="ritual-card"><span class="section-index">02 / A MOMENT FOR YOURSELF</span><h2>给今天一点仪式感<span aria-hidden="true">✧</span></h2><p id="daily-ritual">泡一杯喜欢的热饮，给自己留十分钟，什么也不用赶。</p><div class="ritual-rule"></div><label class="mood-label">此刻的你，是什么心情？</label><div class="mood-options" role="group" aria-label="记录今日心情"><button type="button" data-mood="开心" aria-pressed="false"><span aria-hidden="true">☀</span> 开心</button><button type="button" data-mood="平静" aria-pressed="false"><span aria-hidden="true">☁</span> 平静</button><button type="button" data-mood="有点累" aria-pressed="false"><span aria-hidden="true">☾</span> 有点累</button><button type="button" data-mood="想被抱抱" aria-pressed="false"><span aria-hidden="true">♡</span> 想被抱抱</button></div><p id="mood-status" class="mood-status" role="status">心情只保存在你的浏览器里，安心写下就好。</p><div class="mood-week" id="mood-week" aria-label="最近七天的心情"></div></article>
         <article class="letter-card"><div class="letter-orbit" aria-hidden="true"></div><span class="letter-star" aria-hidden="true">✦</span><span class="section-index">P.S. I HAVE SOMETHING FOR YOU</span><h2>宇宙很大，<br>但我偏心你。</h2><p class="letter-intro">比星座更确定的，是想让你开心的心意。</p><button id="reveal-message" class="letter-button" type="button" aria-expanded="false" aria-controls="love-message"><span>拆开今天的小情书</span> <span aria-hidden="true">↗</span></button><div id="love-message" class="love-message" hidden><p id="love-body"></p><p id="love-ps" class="love-ps"></p></div><div class="letter-foot"><span class="letter-date" id="letter-date">2026.11.05</span><span class="letter-signature">给<span data-her>你</span> <span aria-hidden="true">♡</span></span></div></article>
       </section>
 
@@ -109,6 +109,24 @@
           <p id="growth-text">第一次来。这片星空，是为你留的。</p>
         </div>
         <svg id="vine" class="vine" viewBox="0 0 420 72" aria-hidden="true"></svg>
+      </section>
+
+      <section class="reminder" aria-labelledby="reminder-heading">
+        <div class="reminder-copy">
+          <span class="section-index">04 / A LITTLE REMINDER</span>
+          <h2 id="reminder-heading">每天，提醒你一次</h2>
+          <p>选一个时间，到点我会轻轻敲你一下；想关掉页面也收到，就加进手机日历。</p>
+        </div>
+        <div class="reminder-panel">
+          <div class="reminder-row">
+            <label class="switch"><input type="checkbox" id="remind-toggle"><span class="switch-track" aria-hidden="true"><span class="switch-dot"></span></span><span class="switch-text">每天提醒我</span></label>
+            <label class="time-field"><span>时间</span><input type="time" id="remind-time" value="21:00" step="60"></label>
+            <button type="button" class="ghost-button" id="remind-calendar">加入手机日历</button>
+          </div>
+          <p class="reminder-status" id="remind-status" role="status"></p>
+          <p class="reminder-hint" id="remind-hint" hidden>在微信里打开时，点右上角「用浏览器打开」，日历才导得进去。</p>
+          <p class="countdown" id="countdown"></p>
+        </div>
       </section>
     </main>
 

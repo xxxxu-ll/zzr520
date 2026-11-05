@@ -217,6 +217,8 @@ const CONFIG = {
 
     document.title = `${current.sign.name} · ${selectedDate} | ${HER ? '写给' + HER + '的星空' : '写给你的星空'}`;
     renderMood();
+    renderMoodWeek();
+    renderCountdown();
   }
 
   function syncUrl() {
@@ -250,6 +252,7 @@ const CONFIG = {
     if (selectedDate > today) return;
     const ok = storage.set(moodKey(), b.dataset.mood);
     renderMood();
+    renderMoodWeek();
     toast(ok ? '已记下这一刻的心情。' : '浏览器未允许保存，心情暂时无法留下。');
   }));
 
@@ -268,6 +271,142 @@ const CONFIG = {
     } catch (error) { if (error.name === 'AbortError') return; }
     window.prompt('复制这个链接，分享今天的星空：', url.href);
   });
+
+  /* ---------------------------------------------------------------
+     提醒：页面开着时弹通知；关掉页面也能收到，靠「加入手机日历」
+     --------------------------------------------------------------- */
+  const REMIND_KEY = 'zzr520-remind-v1';
+  const timeToMinutes = t => {
+    const [h, m] = String(t || '').split(':').map(Number);
+    return (Number.isFinite(h) ? h : 21) * 60 + (Number.isFinite(m) ? m : 0);
+  };
+
+  function beijingNow() {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    }).formatToParts(new Date());
+    const get = t => parts.find(p => p.type === t).value;
+    return {
+      day: `${get('year')}-${get('month')}-${get('day')}`,
+      minutes: Number(get('hour')) * 60 + Number(get('minute'))
+    };
+  }
+
+  function readRemind() {
+    try {
+      return Object.assign({ on: false, time: '21:00', last: '' }, JSON.parse(storage.get(REMIND_KEY) || '{}'));
+    } catch { return { on: false, time: '21:00', last: '' }; }
+  }
+  let remind = readRemind();
+  const saveRemind = () => storage.set(REMIND_KEY, JSON.stringify(remind));
+
+  function remindStatus() {
+    if (!remind.on) return '还没开。开着页面时，到点我会弹一句话；想连关掉页面也收到，就加入手机日历。';
+    if (!('Notification' in window)) return `已设为每天 ${remind.time}。这台浏览器不支持通知，建议用「加入手机日历」。`;
+    if (Notification.permission === 'granted') return `已设为每天 ${remind.time}（北京时间）。开着页面时会轻敲你一下。`;
+    if (Notification.permission === 'denied') return `通知被浏览器拦住了。可以改用「加入手机日历」，到点一样会提醒。`;
+    return `已设为每天 ${remind.time}。需要允许通知，才会真的弹出来。`;
+  }
+
+  async function sendReminder() {
+    const body = current ? `${current.sign.name} · ${current.theme}` : '今天的星空已经准备好了。';
+    try {
+      if ('serviceWorker' in navigator) {
+        const reg = await navigator.serviceWorker.ready;
+        if (reg && reg.showNotification) {
+          await reg.showNotification('今天的星空到了', {
+            body, tag: 'zzr520-daily', icon: './icons/icon-192.png', badge: './icons/icon-192.png'
+          });
+          return true;
+        }
+      }
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('今天的星空到了', { body, icon: './icons/icon-192.png' });
+        return true;
+      }
+    } catch { }
+    return false;
+  }
+
+  function checkReminder() {
+    if (!remind.on) return;
+    const now = beijingNow();
+    if (remind.last === now.day) return;
+    if (now.minutes < timeToMinutes(remind.time)) return;
+    remind.last = now.day;
+    remind.time = remind.time || '21:00';
+    saveRemind();
+    toast('今天的星空到了，来看看吧。');
+    sendReminder();
+  }
+
+  const pad2 = n => String(n).padStart(2, '0');
+  const toICS = d => `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}00Z`;
+
+  function buildCalendar() {
+    const [hh, mm] = remind.time.split(':').map(Number);
+    const [y, m, d] = beijingNow().day.split('-').map(Number);
+    let start = new Date(Date.UTC(y, m - 1, d, (hh || 21) - 8, mm || 0));
+    if (start.getTime() < Date.now()) start = new Date(start.getTime() + 86400000);
+    const stamp = toICS(new Date());
+    const lines = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//ZZR520//A Sky For You//CN',
+      'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:写给紫瑞的星空', 'X-WR-TIMEZONE:Asia/Shanghai',
+      'BEGIN:VEVENT', 'UID:zzr520-daily@local', `DTSTAMP:${stamp}`, `DTSTART:${toICS(start)}`,
+      'DURATION:PT15M', 'RRULE:FREQ=DAILY', 'SUMMARY:今天的星空到了',
+      `DESCRIPTION:写给${WHO}的星空 · 每天一封小情书`, `URL:${location.origin}${location.pathname}`,
+      'BEGIN:VALARM', 'TRIGGER:PT0M', 'ACTION:DISPLAY', 'DESCRIPTION:今天的星空到了', 'END:VALARM', 'END:VEVENT'
+    ];
+    const specials = [];
+    if (CONFIG.anniversary) specials.push([CONFIG.anniversary, '今天是个特别的日子']);
+    if (CONFIG.birthday) specials.push([CONFIG.birthday, '生日快乐']);
+    specials.forEach(([md, title], i) => {
+      const [sm, sd] = md.split('-').map(Number);
+      let s = new Date(Date.UTC(y, sm - 1, sd, 1, 0));
+      if (s.getTime() < Date.now()) s = new Date(Date.UTC(y + 1, sm - 1, sd, 1, 0));
+      lines.push('BEGIN:VEVENT', `UID:zzr520-special-${i}@local`, `DTSTAMP:${stamp}`,
+        `DTSTART:${toICS(s)}`, 'RRULE:FREQ=YEARLY', `SUMMARY:${title}`,
+        `DESCRIPTION:${location.origin}${location.pathname}`, 'END:VEVENT');
+    });
+    lines.push('END:VCALENDAR');
+    return lines.join('\r\n');
+  }
+
+  function renderCountdown() {
+    const el = $('countdown');
+    if (!el) return;
+    const items = [];
+    if (CONFIG.anniversary) items.push(['我们的日子', CONFIG.anniversary]);
+    if (CONFIG.birthday) items.push(['你的生日', CONFIG.birthday]);
+    if (!items.length) { el.hidden = true; return; }
+    const [y, m, d] = beijingNow().day.split('-').map(Number);
+    const todayUTC = Date.UTC(y, m - 1, d);
+    el.hidden = false;
+    el.textContent = items.map(([label, md]) => {
+      const [mm2, dd] = md.split('-').map(Number);
+      let t = Date.UTC(y, mm2 - 1, dd);
+      if (t < todayUTC) t = Date.UTC(y + 1, mm2 - 1, dd);
+      const days = Math.round((t - todayUTC) / 86400000);
+      return days === 0 ? `今天就是${label}` : `距${label}还有 ${days} 天`;
+    }).join('　·　');
+  }
+
+  const MOOD_COLORS = { '开心': '#7d9070', '平静': '#a9b79c', '有点累': '#b5a58c', '想被抱抱': '#a97e6b' };
+
+  function renderMoodWeek() {
+    const box = $('mood-week');
+    if (!box) return;
+    const cells = [];
+    for (let i = 6; i >= 0; i -= 1) {
+      const day = addDays(today, -i);
+      const val = storage.get(MOOD_PREFIX + day);
+      const color = val && MOOD_COLORS[val];
+      const label = `${day} ${val || '没有记录'}`;
+      cells.push(`<span class="mood-dot${val ? ' is-set' : ''}" title="${label}" aria-label="${label}"${color ? ` style="background:${color};border-color:${color}"` : ''}></span>`);
+    }
+    box.innerHTML = cells.join('');
+  }
 
   /* ---------------------------------------------------------------
      跨天：页面一直开着也能自己换到新的一天
@@ -289,6 +428,48 @@ const CONFIG = {
     document.querySelectorAll('[data-her]').forEach(el => { el.textContent = HER; });
   }
 
+  /* ---------------- 提醒面板 ---------------- */
+  if (/MicroMessenger/i.test(navigator.userAgent)) $('remind-hint').hidden = false;
+
+  $('remind-toggle').checked = remind.on;
+  $('remind-time').value = remind.time;
+  $('remind-status').textContent = remindStatus();
+
+  $('remind-toggle').addEventListener('change', async e => {
+    remind.on = e.target.checked;
+    remind.last = beijingNow().day;
+    if (remind.on && 'Notification' in window && Notification.permission === 'default') {
+      try { await Notification.requestPermission(); } catch { }
+    }
+    saveRemind();
+    $('remind-status').textContent = remindStatus();
+    toast(remind.on ? '好，到点我会提醒你。' : '提醒已关掉。');
+  });
+
+  $('remind-time').addEventListener('change', e => {
+    remind.time = e.target.value || '21:00';
+    remind.last = '';
+    saveRemind();
+    $('remind-status').textContent = remindStatus();
+  });
+
+  $('remind-calendar').addEventListener('click', () => {
+    const blob = new Blob([buildCalendar()], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'zzr520-star.ics';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+    toast('日历已下载，用手机打开就能导入。');
+  });
+
+  setInterval(checkReminder, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkReminder(); });
+
   pruneMoods();
   render();
+  checkReminder();
 })();
