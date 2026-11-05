@@ -1,46 +1,95 @@
-# 写给你的星空 · ZZR520
+# 写给紫瑞的星空 · ZZR520
 
-一个送给喜欢星座的人的小网站。默认巨蟹座，支持十二星座、日期切换、每日小情书、心情记录和分享。
+一个每天更新一封小情书的静态网站：星座、星语、幸运清单、一封信，还有一片随你来过而长叶子的星空。
+纯静态，无构建、无第三方脚本、无后端。
 
-网站地址：https://xxxxu-ll.github.io/zzr520/
+线上地址：https://xxxxu-ll.github.io/zzr520/
 
-## 内容来源
+## 想改的东西都在这里
 
-本网站的文字为原创娱乐内容，以北京时间日期和所选星座从本地内容库组合。它不是占星师实时运势、天文计算或外部平台数据。分数、幸运色、数字和默契星座是娱乐设计，不代表真实预测或决策依据。
+打开 `app.js`，最上面三行：
 
-同一天、同一星座的内容保持一致；跨北京时间午夜后自动切换。浏览历史日期时不会被自动跳回今天。文案来自有限内容库，部分文字会在不同日期重复出现。
+```js
+const CONFIG = {
+  her: '紫瑞',              // 她的名字，出现在标题、信末和页脚
+  birthday: '',             // 生日，格式 '07-12'；留空就不触发
+  anniversary: '05-20'      // 在一起的纪念日，格式 'MM-DD'
+};
+```
 
-页面不依赖在线 API，无需密钥。心情记录和上次选择的星座仅保存在当前浏览器的 localStorage 中，不上传服务器、不跨设备同步。网站未加入访问统计、广告、外部字体或第三方脚本；GitHub Pages 本身的访问日志遵循 GitHub 的隐私政策。
+改完保存、推上去就行，不需要重新构建。
 
-## 已调研的开源项目
+## 每天的内容怎么来的
 
-调研时间：2026-11-05。没有复制下列项目的源码或运势正文。
+`fortune.js` 里是一套原创文案库（标题、星语、四个维度、仪式、信），
+用 `hash(日期 + 星座)` 取样：同一天同一星座永远一致，跨天不按顺序走，
+所以不会出现「昨天和今天是文案库里挨着的两句」这种破绽。
 
-| 项目 | 许可证 | 采用前的限制 |
-| --- | --- | --- |
-| [sameerkumar18/aztro](https://github.com/sameerkumar18/aztro) | Apache-2.0 | Flask API；文档公开端点此次测试返回 404，存在旧依赖。 |
-| [ashutoshkrris/Horoscope-API](https://github.com/ashutoshkrris/Horoscope-API) | MIT | 需 Flask 后端，抓取第三方站点，不能直接部署在静态 Pages 上。 |
-| [ecitlm/Node-SpliderApi](https://github.com/ecitlm/Node-SpliderApi) | MIT | 中文接口集合，需后端与数据库，星座内容需要聚合 APPCODE。 |
-| [GBcui/horoscope-serve](https://github.com/GBcui/horoscope-serve) | MIT | 中文 MCP 服务，其依赖的 vvhan 接口本次测试 TLS 连接失败。 |
+- 每天 0 点（北京时间）自动换新；页面一直开着也会自己切过去。
+- 分数 62–98，四条维度各自独立。
+- `?sign=cancer&date=2026-05-20` 这样的地址可以直接分享某一天。
 
-因此本版本使用原创、独立的静态实现。若以后需要第三方每日运势，可单独确认内容使用许可，再由 GitHub Actions 定时获取静态 JSON。API 密钥应保存在 GitHub Secrets，不能放入浏览器 JavaScript。
+## 只有她知道的三件小事
 
-## 文件与修改
+1. **第 N 次来看**：存在浏览器 localStorage 里，左上角日期旁边显示。
+   半小时内反复刷新不重复计数。
+2. **会长叶子的星空**：第一次来是种子 + 一片叶子，之后每多一天多一片，
+   最多 20 片。数字来自「第一次打开到现在第几天」，不是刷出来的。
+3. **特殊日子**：生日、纪念日、跨年当天，标题和一封信会静默换成另一套，
+   星图右上角会多一颗铜色星。一年只出现几次，不常驻。
 
-- `index.html`：页面结构、标题和内容来源说明。
-- `styles.css`：响应式样式，支持减少动态效果的系统偏好。
-- `fortune.js`：原创文案、星座资料、按日期生成内容的函数。
-- `app.js`：日期与星座切换、情书、心情存储、分享。
-- `.nojekyll`：让 GitHub Pages 直接发布静态文件。
+## 文件
 
-没有构建和安装步骤。在此目录运行 `python -m http.server 8765` 后，打开 `http://localhost:8765` 即可预览。
+| 文件 | 作用 |
+| --- | --- |
+| `index.html` | 页面结构、OG 分享卡、manifest、字体预加载 |
+| `styles.css` | 苔纸 + 墨绿的设计系统，全部颜色收在 `:root` |
+| `fortune.js` | 文案库 + 按日期取样 |
+| `app.js` | 称呼、日期切换、心情、第 N 次、叶子、分享 |
+| `fonts/wenkai-subset.woff2` | 霞鹜文楷子集（919 字，183 KB，OFL 协议） |
+| `fonts/OFL.txt` | 字体授权 |
+| `noise.png` | 3.7 KB 纸纹 |
+| `og.png` | 1200×630 分享图 |
+| `icons/` | 主屏图标 |
+| `manifest.webmanifest` | 添加到主屏幕 |
+| `sw.js` | 离线缓存 |
 
-## GitHub Pages
+## 字体（改文案后要重新子集化）
 
-仓库 Settings → Pages → Build and deployment 选择 Deploy from a branch，分支 `main`，目录 `/ (root)`。每次推送后 Pages 自动发布。
+页面里的字全部来自 `index.html` / `app.js` / `fortune.js`，所以字体只打包用到的 919 个字。
+如果加了新的生僻字，需要重新生成：
 
-`xxxxu-ll.github.io` 是账号对应的 GitHub Pages 域名；`zzr520` 是项目路径，不是独立注册的域名。此版本不需要 `CNAME` 文件或外部 DNS。
+```bash
+pip install fonttools brotli
+python -c "
+import pathlib
+chars=set()
+for n in ['index.html','app.js','fortune.js','styles.css']:
+    chars|=set(pathlib.Path(n).read_text(encoding='utf-8'))
+chars|=set('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ·—…“”‘’《》「」、。，；：！？（）【】✦✧♡☾☀☁↗年月日周一二三四五六')
+pathlib.Path('fonts/chars.txt').write_text(''.join(sorted(c for c in chars if c.isprintable())))
+"
+python -m fontTools.subset LXGWWenKai-Regular.ttf --text-file=fonts/chars.txt \
+  --output-file=fonts/wenkai-subset.woff2 --flavor=woff2 --layout-features=kern,liga,vert,vrt2
+```
 
-## 验证
+漏掉的字会自动回退到系统宋体，不会乱码。
 
-已执行 JavaScript 语法检查、日期与内容生成测试；以本次交付说明中的实际浏览器和线上检查结果为准。
+## 本地预览
+
+```bash
+python -m http.server 8765
+# 打开 http://localhost:8765
+```
+
+## 部署
+
+仓库 Settings → Pages → Deploy from a branch，分支 `main`，目录 `/ (root)`。
+推上去几十秒后生效。`sw.js` 的 HTML 走网络优先，样式脚本走后台更新，
+所以改了文件不用手动改版本号。
+
+## 说明
+
+内容为原创娱乐向，不是占星师实时运势，也不代表真实预测。
+来过的次数、心情只写在这台设备的 localStorage 里，不上传、不跨设备同步。
+网站没有统计、广告、外部字体或第三方脚本。

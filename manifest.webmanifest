@@ -1,0 +1,18 @@
+{
+  "name": "写给紫瑞的星空",
+  "short_name": "星空",
+  "description": "一封每天更新的星座小情书，和一片会随你来过而长叶子的星空。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edf1e4",
+  "theme_color": "#edf1e4",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

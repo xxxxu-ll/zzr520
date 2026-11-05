@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="写给你的星空">
+  <rect width="512" height="512" rx="112" fill="#24392c"/>
+  <mask id="c">
+    <rect width="512" height="512" fill="#000"/>
+    <circle cx="246" cy="258" r="118" fill="#fff"/>
+    <circle cx="296" cy="226" r="102" fill="#000"/>
+  </mask>
+  <circle cx="246" cy="258" r="118" fill="#efe6c8" mask="url(#c)"/>
+  <path d="M372 140l15 40 40 15-40 15-15 40-15-40-40-15 40-15Z" fill="#b9a877"/>
+</svg>

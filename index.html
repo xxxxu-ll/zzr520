@@ -3,10 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f6f0">
-  <meta name="description" content="写给你的星空 · ZZR520。一封每天更新的星座小情书，送给值得被温柔以待的你。巨蟹座专属入口、每日星语与心情记录。">
-  <title>写给你的星空 · ZZR520</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='22' fill='%23273544'/%3E%3Cpath d='M48 14a27 27 0 1 0 18 43A24 24 0 0 1 48 14Z' fill='%23e8d6a8'/%3E%3C/svg%3E">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#edf1e4">
+  <meta name="description" content="写给紫瑞的星空：一封每天更新的星座小情书。今日星语、幸运清单、一封小情书，还有一片会随你来过而长叶子的星空。">
+  <title>写给紫瑞的星空 · ZZR520</title>
+  <link rel="canonical" href="https://xxxxu-ll.github.io/zzr520/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="写给紫瑞的星空">
+  <meta property="og:title" content="写给紫瑞的星空 · 今天也值得被温柔以待">
+  <meta property="og:description" content="一封每天更新的星座小情书，和一片会随你来过而长叶子的星空。">
+  <meta property="og:url" content="https://xxxxu-ll.github.io/zzr520/">
+  <meta property="og:image" content="https://xxxxu-ll.github.io/zzr520/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="写给紫瑞的星空">
+  <meta name="twitter:description" content="一封每天更新的星座小情书。">
+  <meta name="twitter:image" content="https://xxxxu-ll.github.io/zzr520/og.png">
+
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="preload" href="./fonts/wenkai-subset.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./styles.css">
   <script src="./fortune.js" defer></script>
   <script src="./app.js" defer></script>
@@ -15,9 +35,9 @@
   <a class="skip-link" href="#main">跳到每日星语</a>
   <div class="page-shell">
     <header class="site-header">
-      <a class="brand" href="./" aria-label="写给你的星空首页">
+      <a class="brand" href="./" aria-label="写给紫瑞的星空首页">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M18 3v30M3 18h30M8 8l20 20M8 28 28 8"/><circle cx="18" cy="18" r="8"/></svg></span>
-        <span class="brand-copy">写给你的星空<span>ZZR520 · A SKY FOR YOU</span></span>
+        <span class="brand-copy">写给<span class="name" data-her>你</span>的星空<span class="brand-sub">ZZR520 · A SKY FOR YOU</span></span>
       </a>
       <nav class="header-nav" aria-label="主导航">
         <a href="#daily" class="nav-current">每日星语<span class="nav-dot" aria-hidden="true"></span></a>
@@ -28,10 +48,10 @@
 
     <main id="main">
       <section class="day-toolbar" aria-label="选择日期与星座">
-        <div class="date-copy"><span class="tiny-star" aria-hidden="true">✦</span><span id="date-label">今天的星空</span><span id="date-subtitle" class="date-subtitle">每日一份小小的好运</span></div>
+        <div class="date-copy"><span class="tiny-star" aria-hidden="true">✦</span><span id="date-label">今天</span><span id="date-iso" class="date-iso">2026.11.05</span><span id="visit-count" class="visit-count" hidden>第一次来看</span></div>
         <div class="date-controls" role="group" aria-label="查看其他日期">
           <button id="prev-day" type="button" aria-label="查看前一天"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5-5 5 5 5"/></svg></button>
-          <button id="today-button" type="button">回到今天</button>
+          <button id="today-button" type="button">今天</button>
           <button id="next-day" type="button" aria-label="查看后一天"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m8 5 5 5-5 5"/></svg></button>
         </div>
       </section>
@@ -40,24 +60,25 @@
         <div class="hero-copy">
           <div class="eyebrow"><span></span> A LITTLE COSMIC LETTER</div>
           <div class="sign-picker"><label for="zodiac-select">写给</label><div class="select-wrap"><select id="zodiac-select" aria-label="选择你的星座"><option value="aries">白羊座</option><option value="taurus">金牛座</option><option value="gemini">双子座</option><option value="cancer" selected>巨蟹座</option><option value="leo">狮子座</option><option value="virgo">处女座</option><option value="libra">天秤座</option><option value="scorpio">天蝎座</option><option value="sagittarius">射手座</option><option value="capricorn">摩羯座</option><option value="aquarius">水瓶座</option><option value="pisces">双鱼座</option></select><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg></div><span class="sign-picker-end">的你</span></div>
-          <h1 id="daily-title">今天，也要<br>被温柔以待。</h1>
+          <h1 id="daily-title"><span id="title-a">今天也要，</span><span id="title-b">被温柔以待。</span></h1>
           <p id="daily-summary" class="daily-summary">把匆忙留给世界，把温柔留给自己。愿你在平凡的一天里，也能接住属于自己的小小幸运。</p>
-          <div class="theme-line"><span class="theme-label">今日关键词</span><span id="daily-theme">温柔 · 陪伴 · 小确幸</span><span class="theme-spark" aria-hidden="true">✧</span></div>
+          <div class="theme-line"><span class="theme-label">今日关键词</span><span id="daily-theme">温柔 · 陪伴 · 小确幸</span><span class="special-chip" id="special-chip" hidden>✦ 今天是特别的一天</span><span class="theme-spark" aria-hidden="true">✧</span></div>
         </div>
-        <div class="celestial" aria-label="星座与月亮的星空插画" role="img">
+        <div class="celestial" id="celestial" aria-label="星座与月亮的星空插画" role="img">
           <svg class="sky-chart" viewBox="0 0 480 440" aria-hidden="true">
-            <defs><radialGradient id="moonGlow" cx="35%" cy="30%"><stop offset="0" stop-color="#fcfbf5"/><stop offset=".7" stop-color="#eee9da"/><stop offset="1" stop-color="#ddd5c0"/></radialGradient><linearGradient id="orbitTint"><stop stop-color="#b7b8ac" stop-opacity=".25"/><stop offset=".5" stop-color="#aaa98f"/><stop offset="1" stop-color="#b7b8ac" stop-opacity=".25"/></linearGradient></defs>
-            <circle cx="240" cy="218" r="163" fill="none" stroke="#dcded3" stroke-width=".8"/>
-            <circle cx="240" cy="218" r="140" fill="none" stroke="#dcded3" stroke-width=".8" stroke-dasharray="1 7"/>
-            <circle cx="240" cy="218" r="185" fill="none" stroke="#e6e6dc" stroke-width=".7"/>
-            <path d="M240 22v28m0 336v28M43 218h27m340 0h27" stroke="#c4c6b5" stroke-width=".8"/>
+            <defs><radialGradient id="moonGlow" cx="35%" cy="30%"><stop offset="0" stop-color="#fcfbf5"/><stop offset=".7" stop-color="#eee9da"/><stop offset="1" stop-color="#ddd5c0"/></radialGradient><linearGradient id="orbitTint"><stop stop-color="#b7c0ab" stop-opacity=".3"/><stop offset=".5" stop-color="#9aa88f"/><stop offset="1" stop-color="#b7c0ab" stop-opacity=".3"/></linearGradient></defs>
+            <circle cx="240" cy="218" r="163" fill="none" stroke="#cfd8c6" stroke-width=".8"/>
+            <circle cx="240" cy="218" r="140" fill="none" stroke="#cfd8c6" stroke-width=".8" stroke-dasharray="1 7"/>
+            <circle cx="240" cy="218" r="185" fill="none" stroke="#dfe4d5" stroke-width=".7"/>
+            <path d="M240 22v28m0 336v28M43 218h27m340 0h27" stroke="#b6c1aa" stroke-width=".8"/>
             <ellipse cx="240" cy="218" rx="213" ry="61" transform="rotate(-29 240 218)" fill="none" stroke="url(#orbitTint)" stroke-width=".8"/>
-            <path d="m136 306 60-21 43-81 49-15 23-62" stroke="#b8bba9" stroke-width="1" fill="none"/>
-            <g fill="#a9ac97"><circle cx="136" cy="306" r="2.7"/><circle cx="196" cy="285" r="3.6"/><circle cx="239" cy="204" r="3"/><circle cx="288" cy="189" r="2.5"/><circle cx="311" cy="127" r="3.8"/></g>
-            <g stroke="#a6ab96" stroke-width=".8"><path d="M380 83v18m-9-9h18M90 142v12m-6-6h12M368 314v16m-8-8h16M118 369v12m-6-6h12"/></g>
-            <g fill="#c0b793"><circle cx="156" cy="75" r="1.7"/><circle cx="410" cy="252" r="1.5"/><circle cx="61" cy="281" r="1.5"/><circle cx="298" cy="389" r="1.5"/><circle cx="352" cy="181" r="1.3"/><circle cx="191" cy="368" r="1.2"/><circle cx="194" cy="118" r="1.2"/></g>
-            <circle cx="354" cy="116" r="31" fill="url(#moonGlow)" stroke="#d5ceb8" stroke-width=".5"/>
-            <g fill="#d7cfbb" opacity=".35"><circle cx="345" cy="105" r="5"/><circle cx="365" cy="121" r="7"/><circle cx="348" cy="131" r="3"/><circle cx="357" cy="96" r="2"/></g>
+            <path d="m136 306 60-21 43-81 49-15 23-62" stroke="#a7b499" stroke-width="1" fill="none"/>
+            <g fill="#86957b"><circle cx="136" cy="306" r="2.7"/><circle cx="196" cy="285" r="3.6"/><circle cx="239" cy="204" r="3"/><circle cx="288" cy="189" r="2.5"/><circle cx="311" cy="127" r="3.8"/></g>
+            <g stroke="#849378" stroke-width=".8"><path d="M380 83v18m-9-9h18M90 142v12m-6-6h12M368 314v16m-8-8h16M118 369v12m-6-6h12"/></g>
+            <g fill="#b3a77e"><circle cx="156" cy="75" r="1.7"/><circle cx="410" cy="252" r="1.5"/><circle cx="61" cy="281" r="1.5"/><circle cx="298" cy="389" r="1.5"/><circle cx="352" cy="181" r="1.3"/><circle cx="191" cy="368" r="1.2"/><circle cx="194" cy="118" r="1.2"/></g>
+            <circle cx="354" cy="116" r="31" fill="url(#moonGlow)" stroke="#cec4a5" stroke-width=".5"/>
+            <g fill="#cdc3a2" opacity=".35"><circle cx="345" cy="105" r="5"/><circle cx="365" cy="121" r="7"/><circle cx="348" cy="131" r="3"/><circle cx="357" cy="96" r="2"/></g>
+            <g class="special-star" aria-hidden="true"><path d="M410 46v22m-11-11h22"/><circle cx="410" cy="57" r="2.4"/></g>
             <text x="240" y="40" text-anchor="middle" class="chart-label">THE UNIVERSE IS ON YOUR SIDE</text>
           </svg>
           <div class="zodiac-center"><span id="zodiac-symbol" class="zodiac-symbol" aria-hidden="true">♋</span><span id="zodiac-name" class="zodiac-name">巨蟹座</span><span id="zodiac-meta" class="zodiac-meta">06.22 — 07.22 · 水象星座</span></div>
@@ -69,22 +90,32 @@
         <div class="section-heading"><div><span class="section-index">01 / DAILY READING</span><h2 id="daily-heading">今日星语 <span>每一点美好，都与你有关</span></h2></div><span class="entertainment-label"><span></span> 原创娱乐解读</span></div>
         <div class="fortune-grid">
           <article class="fortune-card"><div class="card-top"><span class="card-icon overall-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></svg></span><span class="card-label">整体状态<span>YOUR ENERGY</span></span></div><div class="score-line"><span id="score-overall" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">小小期待</span></div><div class="score-track" aria-hidden="true"><span id="bar-overall"></span></div><p id="text-overall">今日的星语正在展开。</p></article>
-          <article class="fortune-card"><div class="card-top"><span class="card-icon love-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.1 5.8a5.1 5.1 0 0 0-7.2 0L12 6.7l-.9-.9a5.1 5.1 0 0 0-7.2 7.2L12 21l8.1-8a5.1 5.1 0 0 0 0-7.2Z"/></svg></span><span class="card-label">爱与心动<span>LOVE & CONNECTION</span></span></div><div class="score-line"><span id="score-love" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">靠近一点</span></div><div class="score-track love-track" aria-hidden="true"><span id="bar-love"></span></div><p id="text-love">把喜欢说给值得的人听。</p></article>
-          <article class="fortune-card"><div class="card-top"><span class="card-icon work-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v15H4ZM9 6V3h6v3M4 11c5 3 11 3 16 0M10 13h4"/></svg></span><span class="card-label">专注与成长<span>WORK & GROWTH</span></span></div><div class="score-line"><span id="score-work" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">慢慢发光</span></div><div class="score-track work-track" aria-hidden="true"><span id="bar-work"></span></div><p id="text-work">每一个小小的进步，都值得被看见。</p></article>
-          <article class="fortune-card"><div class="card-top"><span class="card-icon life-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21V10m0 6C4 16 3 12 3 7c6 0 9 3 9 9Zm0-3c0-7 3-10 9-10 0 6-3 10-9 10Z"/></svg></span><span class="card-label">生活与自己<span>LIFE & LITTLE JOYS</span></span></div><div class="score-line"><span id="score-life" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">好好生活</span></div><div class="score-track life-track" aria-hidden="true"><span id="bar-life"></span></div><p id="text-life">留一点时间，照顾自己的小世界。</p></article>
+          <article class="fortune-card"><div class="card-top"><span class="card-icon love-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.1 5.8a5.1 5.1 0 0 0-7.2 0L12 6.7l-.9-.9a5.1 5.1 0 0 0-7.2 7.2L12 21l8.1-8a5.1 5.1 0 0 0 0-7.2Z"/></svg></span><span class="card-label">爱与心动<span>LOVE &amp; CONNECTION</span></span></div><div class="score-line"><span id="score-love" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">靠近一点</span></div><div class="score-track love-track" aria-hidden="true"><span id="bar-love"></span></div><p id="text-love">把喜欢说给值得的人听。</p></article>
+          <article class="fortune-card"><div class="card-top"><span class="card-icon work-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v15H4ZM9 6V3h6v3M4 11c5 3 11 3 16 0M10 13h4"/></svg></span><span class="card-label">专注与成长<span>WORK &amp; GROWTH</span></span></div><div class="score-line"><span id="score-work" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">慢慢发光</span></div><div class="score-track work-track" aria-hidden="true"><span id="bar-work"></span></div><p id="text-work">每一个小小的进步，都值得被看见。</p></article>
+          <article class="fortune-card"><div class="card-top"><span class="card-icon life-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21V10m0 6C4 16 3 12 3 7c6 0 9 3 9 9Zm0-3c0-7 3-10 9-10 0 6-3 10-9 10Z"/></svg></span><span class="card-label">生活与自己<span>LIFE &amp; LITTLE JOYS</span></span></div><div class="score-line"><span id="score-life" class="score">—</span><span class="score-unit">/ 100</span><span class="score-caption">好好生活</span></div><div class="score-track life-track" aria-hidden="true"><span id="bar-life"></span></div><p id="text-life">留一点时间，照顾自己的小世界。</p></article>
         </div>
         <div class="lucky-strip"><span class="lucky-intro"><span aria-hidden="true">✧</span> 今日幸运清单</span><div class="lucky-item"><span class="lucky-label">幸运色</span><span id="lucky-swatch" class="color-swatch" aria-hidden="true"></span><strong id="lucky-color">月光白</strong></div><div class="lucky-item"><span class="lucky-label">幸运数字</span><strong id="lucky-number" class="lucky-number">6</strong></div><div class="lucky-item"><span class="lucky-label">默契星座</span><strong id="lucky-sign">双鱼座</strong></div><span class="lucky-decoration" aria-hidden="true">✦</span></div>
       </section>
 
       <section class="personal-section" aria-label="今天的小小仪式">
         <article class="ritual-card"><span class="section-index">02 / A MOMENT FOR YOURSELF</span><h2>给今天一点仪式感<span aria-hidden="true">✧</span></h2><p id="daily-ritual">泡一杯喜欢的热饮，给自己留十分钟，什么也不用赶。</p><div class="ritual-rule"></div><label class="mood-label">此刻的你，是什么心情？</label><div class="mood-options" role="group" aria-label="记录今日心情"><button type="button" data-mood="开心" aria-pressed="false"><span aria-hidden="true">☀</span> 开心</button><button type="button" data-mood="平静" aria-pressed="false"><span aria-hidden="true">☁</span> 平静</button><button type="button" data-mood="有点累" aria-pressed="false"><span aria-hidden="true">☾</span> 有点累</button><button type="button" data-mood="想被抱抱" aria-pressed="false"><span aria-hidden="true">♡</span> 想被抱抱</button></div><p id="mood-status" class="mood-status" role="status">心情只保存在你的浏览器里，安心写下就好。</p></article>
-        <article class="letter-card"><div class="letter-orbit" aria-hidden="true"></div><span class="letter-star" aria-hidden="true">✦</span><span class="section-index">P.S. I HAVE SOMETHING FOR YOU</span><h2>宇宙很大，<br>但我偏心你。</h2><p class="letter-intro">比星座更确定的，是想让你开心的心意。</p><button id="reveal-message" class="letter-button" type="button" aria-expanded="false" aria-controls="love-message">拆开今天的小情书 <span aria-hidden="true">↗</span></button><p id="love-message" class="love-message" hidden></p><span class="letter-signature">给最特别的你 <span aria-hidden="true">♡</span></span></article>
+        <article class="letter-card"><div class="letter-orbit" aria-hidden="true"></div><span class="letter-star" aria-hidden="true">✦</span><span class="section-index">P.S. I HAVE SOMETHING FOR YOU</span><h2>宇宙很大，<br>但我偏心你。</h2><p class="letter-intro">比星座更确定的，是想让你开心的心意。</p><button id="reveal-message" class="letter-button" type="button" aria-expanded="false" aria-controls="love-message"><span>拆开今天的小情书</span> <span aria-hidden="true">↗</span></button><div id="love-message" class="love-message" hidden><p id="love-body"></p><p id="love-ps" class="love-ps"></p></div><div class="letter-foot"><span class="letter-date" id="letter-date">2026.11.05</span><span class="letter-signature">给<span data-her>你</span> <span aria-hidden="true">♡</span></span></div></article>
+      </section>
+
+      <section class="growth" aria-labelledby="growth-heading">
+        <div class="growth-copy">
+          <span class="section-index">03 / GROWN WITH YOU</span>
+          <h2 id="growth-heading">你来过的日子，会长成叶子</h2>
+          <p id="growth-text">第一次来。这片星空，是为你留的。</p>
+        </div>
+        <svg id="vine" class="vine" viewBox="0 0 420 72" aria-hidden="true"></svg>
       </section>
     </main>
 
-    <footer id="about" class="site-footer"><div class="footer-top"><span class="footer-brand">写给你的星空 <span>ZZR520</span></span><span class="footer-note">星空负责浪漫，你负责快乐。</span></div><p>本站原创娱乐内容，按北京时间每日更新，不代表真实预测。评分与幸运元素是星座主题的趣味设定，愿它们给你一点轻松的陪伴。</p><p class="footer-bottom"><span>MADE WITH LOVE, UNDER THE SAME SKY.</span><span aria-hidden="true">☾</span><span>每一天，都值得被好好喜欢。</span></p></footer>
+    <footer id="about" class="site-footer"><div class="footer-top"><span class="footer-brand">写给<span class="name" data-her>你</span>的星空 <span class="tag">ZZR520</span></span><span class="footer-note">星空负责浪漫，<span data-her>你</span>负责快乐。</span></div><p>本站原创娱乐内容，按北京时间每日更新，不代表真实预测。评分与幸运元素是星座主题的趣味设定，愿它们给你一点轻松的陪伴。来过的次数和心情只记在这台设备上，不会上传。</p><p class="footer-bottom"><span>MADE WITH LOVE, UNDER THE SAME SKY.</span><span aria-hidden="true">☾</span><span>每一天，都值得被好好喜欢。</span></p></footer>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <noscript><p class="noscript-note">请开启 JavaScript，以查看每日星语、切换星座和记录心情。</p></noscript>
+  <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () { }); }); }</script>
 </body>
 </html>
