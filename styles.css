@@ -406,7 +406,7 @@ h1 span { display: block; }
 
 /* ---------- 微信内提示 ---------- */
 .wx-bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-top: 16px; padding: 11px 13px; background: #f3eeda; border: 1px solid #e0d2ae; border-radius: 7px; }
-.wx-bar p { margin: 0; font-size: 11.5px; line-height: 1.75; color: #6b5a33; text-wrap: pretty; }
+.wx-bar p { margin: 0; font-size: 11.5px; line-height: 1.75; color: #6b5a33; }
 .wx-bar p > span { color: var(--brass-ink); letter-spacing: 2px; margin-right: 4px; }
 .wx-bar b { font-weight: 600; color: #57471f; }
 .wx-bar button { flex: 0 0 auto; color: #7a6636; font-size: 17px; line-height: 1; padding: 2px 4px; min-width: 28px; min-height: 28px; margin-top: -2px; }
