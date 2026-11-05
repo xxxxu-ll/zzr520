@@ -15,6 +15,7 @@ const CONFIG = {
   const $ = id => document.getElementById(id);
   const HER = (CONFIG.her || '').trim();
   const WHO = HER || '你';
+  const IS_WECHAT = /MicroMessenger/i.test(navigator.userAgent);
   document.documentElement.classList.toggle('has-name', Boolean(HER));
 
   const storage = {
@@ -257,6 +258,7 @@ const CONFIG = {
   }));
 
   $('share-button').addEventListener('click', async () => {
+    if (IS_WECHAT) { toast('点右上角「···」→「发送给朋友」。'); return; }
     const url = new URL(location.href);
     url.searchParams.set('sign', signId);
     url.searchParams.set('date', selectedDate);
@@ -302,6 +304,7 @@ const CONFIG = {
   const saveRemind = () => storage.set(REMIND_KEY, JSON.stringify(remind));
 
   function remindStatus() {
+    if (IS_WECHAT) return '微信里不能弹通知。点右上角「···」→「在浏览器打开」，或者用「加入手机日历」。';
     if (!remind.on) return '还没开。开着页面时，到点我会弹一句话；想连关掉页面也收到，就加入手机日历。';
     if (!('Notification' in window)) return `已设为每天 ${remind.time}。这台浏览器不支持通知，建议用「加入手机日历」。`;
     if (Notification.permission === 'granted') return `已设为每天 ${remind.time}（北京时间）。开着页面时会轻敲你一下。`;
@@ -429,9 +432,20 @@ const CONFIG = {
   }
 
   /* ---------------- 提醒面板 ---------------- */
-  if (/MicroMessenger/i.test(navigator.userAgent)) $('remind-hint').hidden = false;
-
   $('remind-toggle').checked = remind.on;
+  if (IS_WECHAT) {
+    $('remind-toggle').disabled = true;
+    $('remind-hint').hidden = true;
+    const bar = $('wx-bar');
+    if (bar && !storage.get('zzr520-wx-hide')) {
+      bar.hidden = false;
+      $('wx-bar-close').addEventListener('click', () => {
+        bar.hidden = true;
+        storage.set('zzr520-wx-hide', '1');
+      });
+    }
+  }
+
   $('remind-time').value = remind.time;
   $('remind-status').textContent = remindStatus();
 
@@ -454,6 +468,10 @@ const CONFIG = {
   });
 
   $('remind-calendar').addEventListener('click', () => {
+    if (IS_WECHAT) {
+      toast('微信里不能直接导入日历。点右上角「···」→「在浏览器打开」再点一次。');
+      return;
+    }
     const blob = new Blob([buildCalendar()], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

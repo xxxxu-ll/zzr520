@@ -8,6 +8,7 @@
   <meta name="description" content="写给紫瑞的星空：一封每天更新的星座小情书。今日星语、幸运清单、一封小情书，还有一片会随你来过而长叶子的星空。">
   <title>写给紫瑞的星空 · ZZR520</title>
   <link rel="canonical" href="https://xxxxu-ll.github.io/zzr520/">
+  <link rel="image_src" href="./icons/icon-512.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="写给紫瑞的星空">
@@ -45,6 +46,11 @@
         <button id="share-button" aria-label="分享这片星空" class="share-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M5 11v9h14v-9"/></svg><span>分享这片星空</span></button>
       </nav>
     </header>
+
+    <div class="wx-bar" id="wx-bar" hidden>
+      <p>微信里不能弹通知、也不能导入日历。想用完整功能，点右上角 <b>···</b> → <b>在浏览器打开</b>。</p>
+      <button type="button" id="wx-bar-close" aria-label="不再提示">×</button>
+    </div>
 
     <main id="main">
       <section class="day-toolbar" aria-label="选择日期与星座">
@@ -133,7 +139,8 @@
     <footer id="about" class="site-footer"><div class="footer-top"><span class="footer-brand">写给<span class="name" data-her>你</span>的星空 <span class="tag">ZZR520</span></span><span class="footer-note">星空负责浪漫，<span data-her>你</span>负责快乐。</span></div><p>本站原创娱乐内容，按北京时间每日更新，不代表真实预测。评分与幸运元素是星座主题的趣味设定，愿它们给你一点轻松的陪伴。来过的次数和心情只记在这台设备上，不会上传。</p><p class="footer-bottom"><span>MADE WITH LOVE, UNDER THE SAME SKY.</span><span aria-hidden="true">☾</span><span>每一天，都值得被好好喜欢。</span></p></footer>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <img class="wx-thumb" src="./icons/icon-512.png" width="300" height="300" alt="" aria-hidden="true">
   <noscript><p class="noscript-note">请开启 JavaScript，以查看每日星语、切换星座和记录心情。</p></noscript>
-  <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () { }); }); }</script>
+  <script>if ('serviceWorker' in navigator && !/MicroMessenger/i.test(navigator.userAgent)) { addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () { }); }); }</script>
 </body>
 </html>
